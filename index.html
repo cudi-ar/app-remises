@@ -221,6 +221,14 @@
         let SESSION = null;
         let DOCENTES = [];
 
+        const turno = document.getElementById("turno");
+        const parada = document.getElementById("parada");
+        const universidad = document.getElementById("universidad");
+        const carrera = document.getElementById("carrera");
+        const docente = document.getElementById("docente");
+        const checkIda = document.getElementById("checkIda");
+        const checkVuelta = document.getElementById("checkVuelta");
+
         // 🔥 DATA LOCAL
         const DATA = {
             "UNAHUR": ["Obstetricia", "Diseño Industrial", "Alimentos"],
@@ -269,7 +277,7 @@
         }
 
         // CARRERAS
-        document.getElementById("universidad").onchange = function () {
+        universidad.onchange = function () {
 
             // cargar carreras
             carrera.innerHTML = "<option value=''>Elegir carrera</option>";
@@ -291,7 +299,7 @@
         }
 
         // FILTRAR DOCENTES
-        document.getElementById("carrera").onchange = function () {
+        carrera.onchange = function () {
 
             if (!DOCENTES.length) {
                 alert("Docentes todavía no cargaron, esperá un segundo...");
@@ -314,19 +322,17 @@
         };
 
         // PARADAS
-document.getElementById("turno").onchange = function(){
+        turno.onchange = function () {
+            parada.innerHTML = "<option value=''>Parada</option>";
 
-  let parada = document.getElementById("parada");
+            (PARADAS[this.value] || []).forEach(p => {
+                parada.innerHTML += `<option>${p}</option>`;
+            });
+        };
 
-  parada.innerHTML = "<option value=''>Parada</option>";
-
-  (PARADAS[this.value] || []).forEach(p=>{
-    parada.innerHTML += `<option>${p}</option>`;
-  });
-};
         // MOSTRAR BLOQUES
-        document.getElementById("checkIda").onchange = () => idaDiv.style.display = checkIda.checked ? "block" : "none";
-        document.getElementById("checkVuelta").onchange =() => vueltaDiv.style.display = checkVuelta.checked ? "block" : "none";
+        checkIda.onchange = () => idaDiv.style.display = checkIda.checked ? "block" : "none";
+        checkVuelta.onchange = () => vueltaDiv.style.display = checkVuelta.checked ? "block" : "none";
 
         // ROLES
         function esAdmin() {
