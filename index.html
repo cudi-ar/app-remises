@@ -11,20 +11,17 @@ body {
   margin: 0;
   padding: 10px;
 }
-
 .container {
   max-width: 700px;
   margin: auto;
 }
-
 .card {
   background: white;
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-
 select, input {
   width: 100%;
   padding: 10px;
@@ -32,7 +29,6 @@ select, input {
   border: 1px solid #ccc;
   margin-bottom: 10px;
 }
-
 button {
   width: 100%;
   background: #2c7be5;
@@ -109,12 +105,27 @@ button {
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxqbfx6dcBzAw9EM77GHCy3KYznNrruGU2ToI522yjcmOj4dqYv8yRwKgphhyL0X0Ng/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyGFTMvbp_D32OgRPm3LvyiDA1BtzTTNQ_eqTGs7scXkkahVscmK7cwY3TbcaVvPJRe/exec";
 
 let SESSION = null;
-let DATA = {};
 let DOCENTES = [];
 
+// 🔥 DATA LOCAL (reemplaza GS)
+const DATA = {
+  "UNAHUR": ["Obstetricia", "Diseño Industrial", "Alimentos"],
+  "UBA": ["FMED"],
+  "UBA CBC": ["CBC"],
+  "UNPAZ": ["Videojuegos"],
+  "UNTREF": ["Software"],
+  "CUDI": ["Personal"]
+};
+
+// PARADAS
+const PARADAS = {
+  "Mañana":["Medicina","Combate","General Paz","Liniers","Va por sus propios medios"],
+  "Tarde":["Belgrano","Combate","Liniers","Va por sus propios medios"],
+  "Noche":["Belgrano","Combate","Liniers","Va por sus propios medios"]
+};
 
 // ===== LOGIN =====
 async function login(){
@@ -139,18 +150,25 @@ async function login(){
   }
 }
 
+// ===== UNIVERSIDADES LOCAL =====
+function cargarUniversidades(){
 
-// ===== GET UNIVERSIDADES =====
-async function cargarUniversidades(){
-
-  let res = await fetch(API_URL+"?action=getUniversidades");
-  DATA = await res.json();
+  universidad.innerHTML = "<option>Elegir universidad</option>";
 
   for(let u in DATA){
     universidad.innerHTML += `<option>${u}</option>`;
   }
 }
 
+// ===== CARRERAS =====
+universidad.onchange = function(){
+
+  carrera.innerHTML = "<option>Elegir carrera</option>";
+
+  (DATA[this.value] || []).forEach(c=>{
+    carrera.innerHTML += `<option>${c}</option>`;
+  });
+};
 
 // ===== DOCENTES =====
 async function cargarDocentes(){
@@ -159,6 +177,33 @@ async function cargarDocentes(){
   DOCENTES = await res.json();
 }
 
+// ===== FILTRAR DOCENTES =====
+carrera.onchange = function(){
+
+  docente.innerHTML = "<option>Elegir docente</option>";
+
+  DOCENTES
+    .filter(d => d.universidad === universidad.value && d.carrera === carrera.value)
+    .forEach(d=>{
+      docente.innerHTML += `<option value="${d.nombre}" data-tel="${d.telefono}">
+        ${d.nombre}
+      </option>`;
+    });
+};
+
+// ===== PARADAS DINÁMICAS =====
+turno.onchange = function(){
+
+  parada.innerHTML = "<option>Parada</option>";
+
+  (PARADAS[this.value] || []).forEach(p=>{
+    parada.innerHTML += `<option>${p}</option>`;
+  });
+};
+
+// ===== MOSTRAR BLOQUES =====
+checkIda.onchange = ()=> idaDiv.style.display = checkIda.checked ? "block":"none";
+checkVuelta.onchange = ()=> vueltaDiv.style.display = checkVuelta.checked ? "block":"none";
 
 // ===== VIAJES =====
 async function cargarViajes(){
@@ -191,17 +236,23 @@ async function cargarViajes(){
   listaViajes.innerHTML = html;
 }
 
-
 // ===== GUARDAR VIAJE =====
 form.onsubmit = async e=>{
   e.preventDefault();
+
+  let selectedDoc = docente.options[docente.selectedIndex];
 
   let data = {
     action:"guardarViaje",
     universidad: universidad.value,
     carrera: carrera.value,
-    docente_nombre: docente.value,
-    dias:["Lunes"] // simplificado
+    docente_nombre: selectedDoc.value,
+    docente_telefono: selectedDoc.getAttribute("data-tel"),
+    turno: turno.value,
+    parada: parada.value,
+    turno_vuelta: turno_vuelta.value,
+    parada_vuelta: parada_vuelta.value,
+    dias:["Lunes"]
   };
 
   await fetch(API_URL,{
@@ -213,8 +264,7 @@ form.onsubmit = async e=>{
   cargarViajes();
 };
 
-
-// ===== GUARDAR PATENTE =====
+// ===== PATENTE =====
 async function editarAuto(id,tipo,celda){
 
   if(SESSION?.rol !== "chofer"){
@@ -237,7 +287,6 @@ async function editarAuto(id,tipo,celda){
 
   celda.innerText = patente;
 }
-
 
 // INIT
 cargarUniversidades();
