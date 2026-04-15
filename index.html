@@ -6,70 +6,103 @@
 
 <style>
 body {
-  font-family: Arial;
-  background: #f5f7fb;
-  margin: 0;
-  padding: 10px;
-}
+      font-family: Arial;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 10px;
+    }
 
-.container {
-  max-width: 700px;
-  margin: auto;
-}
+    .container {
+      max-width: 700px;
+      margin: auto;
+    }
 
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
-select, input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-}
+    select,
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+      height: 42px;
+    }
 
-button {
-  width: 100%;
-  background: #2c7be5;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-}
+    input[type="checkbox"] {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
 
-.check-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+    .checkbox-inline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
 
-.check-group label {
-  background: #f1f3f8;
-  padding: 5px 10px;
-  border-radius: 6px;
-}
+    .check-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom:10px;
+    }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top:10px;
-}
+    .check-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #f1f3f8;
+      padding: 5px 10px;
+      border-radius: 6px;
+    }
 
-td,th {
-  border:1px solid #ddd;
-  padding:6px;
-}
+    button {
+      margin-top:10px;
+      width: 100%;
+      background: #2c7be5;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-th {
-  background:#2c7be5;
-  color:white;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 6px;
+    }
+
+    th {
+      background: #2c7be5;
+      color: white;
+    }
+
+    .badge {
+      padding: 3px 6px;
+      border-radius: 6px;
+      color: white;
+      font-size: 12px;
+    }
+
+    .mañana { background: #28a745; }
+    .tarde { background: #ff9800; }
+    .noche { background: #673ab7; }
 </style>
 
 </head>
