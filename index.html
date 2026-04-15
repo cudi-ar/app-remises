@@ -2,525 +2,247 @@
 <html>
 
 <head>
-  <base target="_top">
+<meta charset="UTF-8">
 
-  <style>
-    body {
-      font-family: Arial;
-      background: #f5f7fb;
-      margin: 0;
-      padding: 10px;
-    }
+<style>
+body {
+  font-family: Arial;
+  background: #f5f7fb;
+  margin: 0;
+  padding: 10px;
+}
 
-    .container {
-      max-width: 700px;
-      margin: auto;
-    }
+.container {
+  max-width: 700px;
+  margin: auto;
+}
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
 
-    select,
-    input[type="text"] {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-      font-size: 14px;
-      box-sizing: border-box;
-      height: 42px;
-    }
+select, input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
 
-    input[type="checkbox"] {
-      transform: scale(1.1);
-      cursor: pointer;
-    }
+button {
+  width: 100%;
+  background: #2c7be5;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>
 
-    .checkbox-inline {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 10px 0;
-    }
-
-    .check-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom:10px;
-    }
-
-    .check-group label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: #f1f3f8;
-      padding: 5px 10px;
-      border-radius: 6px;
-    }
-
-    button {
-      margin-top:10px;
-      width: 100%;
-      background: #2c7be5;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 6px;
-    }
-
-    th {
-      background: #2c7be5;
-      color: white;
-    }
-
-    .badge {
-      padding: 3px 6px;
-      border-radius: 6px;
-      color: white;
-      font-size: 12px;
-    }
-
-    .mañana { background: #28a745; }
-    .tarde { background: #ff9800; }
-    .noche { background: #673ab7; }
-  </style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <!-- FORM -->
-  <div class="card">
-    <h2>Cargar viaje</h2>
-
-    <p style="text-align:left; font-size:14px; color:#555;">
-      Complete este formulario para registrar su viaje semanal de remis.<br><br>
-      • Seleccione la universidad y carrera.<br>
-      • Ingrese sus datos.<br>
-      • Elija si realiza viaje de ida y/o vuelta.<br>
-      • Marque los días.<br>
-    </p>
-
-    <form id="form">
-
-      <select name="universidad" id="universidad" required>
-        <option value="" disabled selected>Elegir universidad</option>
-      </select>
-
-      <select name="carrera" id="carrera" required>
-        <option value="" disabled selected>Elegir carrera</option>
-      </select>
-
-<select id="docente" required>
-  <option value="">Elegir docente</option>
-</select>
-
-      <div class="checkbox-inline">
-        <label>¿El viaje es cuatrimestral?</label>
-        <input type="checkbox" name="cuatrimestral">
-      </div>
-
-      <!-- IDA -->
-      <div class="checkbox-inline">
-        <label>¿Realiza viaje de ida?</label>
-        <input type="checkbox" id="checkIda">
-      </div>
-
-      <div id="idaDiv" style="display:none">
-        <select name="turno">
-          <option value="">Turno ida</option>
-          <option>Mañana</option>
-          <option>Tarde</option>
-          <option>Noche</option>
-        </select>
-
-        <select name="parada" id="parada">
-          <option value="">Parada ida</option>
-        </select>
-      </div>
-
-      <!-- VUELTA -->
-      <div class="checkbox-inline">
-        <label>¿Realiza viaje de vuelta?</label>
-        <input type="checkbox" id="checkVuelta">
-      </div>
-
-      <div id="vueltaDiv" style="display:none">
-        <select name="turno_vuelta">
-          <option value="">Turno vuelta</option>
-          <option>Mañana</option>
-          <option>Tarde</option>
-          <option>Noche</option>
-        </select>
-
-        <select name="parada_vuelta">
-          <option value="">Parada vuelta</option>
-          <option>CUDI</option>
-          <option>Liniers</option>
-          <option>Combate</option>
-          <option>Belgrano</option>
-          <option>Vuelve por sus propios medios</option>
-        </select>
-      </div>
-
-      <!-- DIAS -->
-      <div class="check-group">
-        <label><input type="checkbox" name="dias" value="Lunes">Lunes</label>
-        <label><input type="checkbox" name="dias" value="Martes">Martes</label>
-        <label><input type="checkbox" name="dias" value="Miércoles">Miércoles</label>
-        <label><input type="checkbox" name="dias" value="Jueves">Jueves</label>
-        <label><input type="checkbox" name="dias" value="Viernes">Viernes</label>
-        <label><input type="checkbox" name="dias" value="Sábado">Sábado</label>
-      </div>
-
-      <button type="submit">Guardar</button>
-    </form>
-
-    <p id="msg"></p>
-  </div>
-
-  <!-- LISTADO -->
-  <div class="card">
-
-    <select id="filtroUni" onchange="cargarViajes()">
-      <option value="">Todas las universidades</option>
-    </select>
-
-    <button onclick="cargarViajes()">Actualizar</button>
-
-    <div id="listaViajes"></div>
-
-  </div>
-
-</div>
 <div class="card">
-  <h3>Acceso administrador</h3>
+<h2>Cargar viaje</h2>
 
-  <input type="text" id="user" placeholder="Usuario">
-  <input type="password" id="pass" placeholder="Contraseña">
+<form id="form">
 
-  <button onclick="login()">Iniciar sesión</button>
+<select id="universidad"></select>
+<select id="carrera"></select>
+<select id="docente"></select>
 
-  <p id="loginMsg"></p>
+<label><input type="checkbox" id="checkIda"> Ida</label>
+<div id="idaDiv" style="display:none">
+<select id="turno">
+<option>Mañana</option>
+<option>Tarde</option>
+<option>Noche</option>
+</select>
+<select id="parada"></select>
 </div>
+
+<label><input type="checkbox" id="checkVuelta"> Vuelta</label>
+
+<div id="vueltaDiv" style="display:none">
+<select id="turno_vuelta">
+<option>Mañana</option>
+<option>Tarde</option>
+<option>Noche</option>
+</select>
+<select id="parada_vuelta">
+<option>CUDI</option>
+<option>Liniers</option>
+<option>Combate</option>
+<option>Belgrano</option>
+<option>Vuelve por sus propios medios</option>
+</select>
+</div>
+
+<button>Guardar</button>
+</form>
+
+<p id="msg"></p>
+</div>
+
+<div class="card">
+<button onclick="cargarViajes()">Actualizar</button>
+<div id="listaViajes"></div>
+</div>
+
+<div class="card">
+<h3>Login</h3>
+<input id="user">
+<input id="pass" type="password">
+<button onclick="login()">Entrar</button>
+<p id="loginMsg"></p>
+</div>
+
+</div>
+
 <script>
 
+const API_URL = "https://script.google.com/macros/s/AKfycbz7tNAjFAYnjmvfjOhc1us7VkmwZGWt9sqUhoE1GWLjnMIeaCRkYvJNqlxWke0aM7Kj/exec";
+
+let SESSION = null;
 let DATA = {};
 let DOCENTES = [];
 
-let SESSION = null;
 
-function login(){
+// ===== LOGIN =====
+async function login(){
 
-  let user = document.getElementById("user").value;
-  let pass = document.getElementById("pass").value;
-
-  google.script.run.withSuccessHandler(res=>{
-
-    if(res.success){
-      SESSION = res;
-
-      document.getElementById("loginMsg").innerText =
-        "Login correcto ✔ (" + res.rol + ")";
-
-      actualizarPermisos();
-
-      // 🔥 CLAVE: recargar tabla con el nuevo rol
-      cargarViajes();
-
-    } else {
-      document.getElementById("loginMsg").innerText =
-        "Usuario o contraseña incorrectos";
-    }
-
-  }).loginUsuario(user, pass);
-}
-
-function actualizarPermisos(){
-
-  document.querySelectorAll(".admin-only").forEach(el=>{
-    el.style.display = (SESSION && SESSION.rol === "admin") ? "inline-block" : "none";
+  let res = await fetch(API_URL,{
+    method:"POST",
+    body: JSON.stringify({
+      action:"login",
+      user: user.value,
+      pass: pass.value
+    })
   });
 
+  let data = await res.json();
+
+  if(data.success){
+    SESSION = data;
+    loginMsg.innerText = "✔ " + data.rol;
+    cargarViajes();
+  } else {
+    loginMsg.innerText = "Error login";
+  }
 }
 
 
-google.script.run.withSuccessHandler(res=>{
-  DOCENTES = res;
-}).getDocentes();
+// ===== GET UNIVERSIDADES =====
+async function cargarUniversidades(){
 
-
-document.getElementById("carrera").onchange = function(){
-
-  let uni = document.getElementById("universidad").value;
-  let carrera = this.value;
-
-  let select = document.getElementById("docente");
-  select.innerHTML = "<option value=''>Elegir docente</option>";
-
-  DOCENTES
-    .filter(d => d.universidad === uni && d.carrera === carrera)
-    .forEach(d => {
-      select.innerHTML += `<option value="${d.nombre}" data-tel="${d.telefono}">
-        ${d.nombre}
-      </option>`;
-    });
-};
-
-
-const PARADAS = {
-  "Mañana":["Medicina","Combate","General Paz","Liniers","Va por sus propios medios"],
-  "Tarde":["Belgrano","Combate","Liniers","Va por sus propios medios"],
-  "Noche":["Belgrano","Combate","Liniers","Va por sus propios medios"]
-};
-
-// cargar universidades
-google.script.run.withSuccessHandler(res=>{
-  DATA=res;
-
-  let uni=document.getElementById("universidad");
-  let filtro=document.getElementById("filtroUni");
+  let res = await fetch(API_URL+"?action=getUniversidades");
+  DATA = await res.json();
 
   for(let u in DATA){
-    uni.innerHTML+=`<option>${u}</option>`;
-    filtro.innerHTML+=`<option>${u}</option>`;
+    universidad.innerHTML += `<option>${u}</option>`;
   }
+}
 
-}).getUniversidades();
 
-// carreras
-document.getElementById("universidad").onchange=function(){
-  let c=document.getElementById("carrera");
-  c.innerHTML="<option value=''>Carrera</option>";
+// ===== DOCENTES =====
+async function cargarDocentes(){
 
-  (DATA[this.value]||[]).forEach(x=>{
-    c.innerHTML+=`<option>${x}</option>`;
+  let res = await fetch(API_URL+"?action=getDocentes");
+  DOCENTES = await res.json();
+}
+
+
+// ===== VIAJES =====
+async function cargarViajes(){
+
+  let res = await fetch(API_URL+"?action=obtenerViajes");
+  let data = await res.json();
+
+  let html = "";
+
+  data.forEach(v=>{
+
+    let autoIda = SESSION?.rol==="chofer"
+      ? `<td onclick="editarAuto('${v.fecha_viaje}','ida',this)">➕</td>`
+      : `<td>${v.auto_ida || "---"}</td>`;
+
+    html += `
+    <table>
+    <tr>
+      <td>${v.universidad}</td>
+      <td>${v.carrera}</td>
+      <td>${v.docente}</td>
+      <td>${v.parada}</td>
+      <td>${v.horario_ida}</td>
+      ${autoIda}
+    </tr>
+    </table>
+    `;
   });
-};
 
-// mostrar ida
-document.getElementById("checkIda").onchange=function(){
-  document.getElementById("idaDiv").style.display=this.checked?"block":"none";
-};
-
-// mostrar vuelta
-document.getElementById("checkVuelta").onchange=function(){
-  document.getElementById("vueltaDiv").style.display=this.checked?"block":"none";
-};
-
-// paradas dinámicas
-document.addEventListener("change", function(e){
-  if(e.target.name === "turno"){
-    let p=document.getElementById("parada");
-    p.innerHTML="<option value=''>Parada</option>";
-
-    (PARADAS[e.target.value]||[]).forEach(x=>{
-      p.innerHTML+=`<option>${x}</option>`;
-    });
-  }
-});
+  listaViajes.innerHTML = html;
+}
 
 
-// submit
-document.getElementById("form").onsubmit=function(e){
+// ===== GUARDAR VIAJE =====
+form.onsubmit = async e=>{
   e.preventDefault();
 
-  let fd=new FormData(this);
-  let dias=fd.getAll("dias");
+  let data = {
+    action:"guardarViaje",
+    universidad: universidad.value,
+    carrera: carrera.value,
+    docente_nombre: docente.value,
+    dias:["Lunes"] // simplificado
+  };
 
-  let idaChecked = document.getElementById("checkIda").checked;
-  let vueltaChecked = document.getElementById("checkVuelta").checked;
+  await fetch(API_URL,{
+    method:"POST",
+    body: JSON.stringify(data)
+  });
 
-  if(!idaChecked && !vueltaChecked){
-    alert("Seleccioná ida o vuelta");
-    return;
-  }
-
-  if(!dias.length){
-    alert("Seleccioná días");
-    return;
-  }
-
-  let data = Object.fromEntries(fd.entries());
-  data.dias = dias;
-
-  // 👇 🔥 ACÁ VA LO DEL DOCENTE
-  let docenteSelect = document.getElementById("docente");
-let selectedOption = docenteSelect.options[docenteSelect.selectedIndex];
-
-if(!selectedOption || !selectedOption.value){
-  alert("Seleccioná un docente");
-  return;
-}
-  data.docente_nombre = selectedOption.value;
-  data.docente_telefono = selectedOption.getAttribute("data-tel");
-
-  // 👇 envío
-  google.script.run.withSuccessHandler(()=>{
-    document.getElementById("msg").innerText="Guardado ✔";
-    document.getElementById("form").reset();
-    document.getElementById("idaDiv").style.display="none";
-    document.getElementById("vueltaDiv").style.display="none";
-    cargarViajes();
-  }).guardarViaje(data);
-};
-// tabla
-function esAdmin(){
-  return SESSION && SESSION.rol === "admin";
-}
-
-function esChofer(){
-  return SESSION && SESSION.rol === "chofer";
-}
-
-function cargarViajes(){
-
-  let cont=document.getElementById("listaViajes");
-  cont.innerHTML="Cargando...";
-
-  google.script.run.withSuccessHandler(data=>{
-
-    let html="";
-    let dias=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
-
-    dias.forEach(dia=>{
-
-      let lista=data.filter(v=>v.dia.toLowerCase()===dia.toLowerCase());
-
-      if(lista.length){
-
-        html+=`<h3>${dia}</h3>
-        <table>
-        <tr>
-          <th>Uni</th>
-          <th>Carrera</th>
-          <th>Docente</th>
-
-          <th>Ida</th>
-          <th>Horario Ida</th>
-
-          <th>Vuelta</th>
-          <th>Horario Vuelta</th>
-          <th>Auto Ida</th>
-          <th>Auto Vuelta</th>
-
-          ${esAdmin() ? "<th>Acciones</th>" : ""}
-        </tr>`;
-
-        lista.forEach(v=>{
-
-          let autoIda = "";
-          let autoVuelta = "";
-
-          if(esChofer()){
-            autoIda = `<td onclick="editarAuto('${v.fecha_viaje}','ida',this)" style="cursor:pointer;background:#eef;">
-              ${v.auto_ida || "➕"}
-            </td>`;
-
-            autoVuelta = `<td onclick="editarAuto('${v.fecha_viaje}','vuelta',this)" style="cursor:pointer;background:#eef;">
-              ${v.auto_vuelta || "➕"}
-            </td>`;
-          } else {
-            autoIda = `<td>${v.auto_ida || "---"}</td>`;
-            autoVuelta = `<td>${v.auto_vuelta || "---"}</td>`;
-          }
-
-          let acciones = "";
-          if(esAdmin()){
-            acciones = `<td>
-              <button onclick="editar('${v.fecha_viaje}')">Editar</button>
-              <button style="background:red" onclick="eliminar('${v.fecha_viaje}')">X</button>
-            </td>`;
-          }
-
-          html += `<tr>
-
-            <td>${v.universidad || "-"}</td>
-            <td>${v.carrera || "-"}</td>
-            <td>${v.docente || "-"}</td>
-
-            <td>${v.parada || "-"}</td>
-            <td>${v.horario_ida || "-"}</td>
-            
-
-            <td>${v.parada_vuelta || "-"}</td>
-            <td>${v.horario_vuelta || "-"}</td>
-            ${autoIda}
-            ${autoVuelta}
-
-            ${acciones}
-
-          </tr>`;
-        });
-
-        html+="</table>";
-      }
-
-    });
-
-    cont.innerHTML=html;
-
-  }).obtenerViajes();
-}
-function eliminar(id){
-  if(!SESSION || SESSION.rol !== "admin"){
-    alert("No autorizado");
-    return;
-  }
-
-  google.script.run.eliminarViaje(id);
-}
-
-
-function editarAuto(id, tipo, celda){
-
-  if(!esChofer()){
-    alert("Solo choferes pueden cargar patente");
-    return;
-  }
-
-  let patente = prompt("Ingresar patente:");
-  if(!patente) return;
-
-  google.script.run.withSuccessHandler(()=>{
-    celda.innerText = patente;
-  }).guardarPatente(id, tipo, patente);
-}
-
-
-function editar(id){
-  if(!SESSION || SESSION.rol !== "admin"){
-    alert("No autorizado");
-    return;
-  }
-
-  alert("Acá después abrimos modal de edición");
-}
-// load inicial
-window.onload = function(){
+  msg.innerText = "Guardado ✔";
   cargarViajes();
 };
+
+
+// ===== GUARDAR PATENTE =====
+async function editarAuto(id,tipo,celda){
+
+  if(SESSION?.rol !== "chofer"){
+    alert("Solo chofer");
+    return;
+  }
+
+  let patente = prompt("Patente");
+  if(!patente) return;
+
+  await fetch(API_URL,{
+    method:"POST",
+    body: JSON.stringify({
+      action:"guardarPatente",
+      id,
+      tipo,
+      patente
+    })
+  });
+
+  celda.innerText = patente;
+}
+
+
+// INIT
+cargarUniversidades();
+cargarDocentes();
+cargarViajes();
 
 </script>
 
