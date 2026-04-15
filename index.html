@@ -105,12 +105,12 @@ button {
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbyGFTMvbp_D32OgRPm3LvyiDA1BtzTTNQ_eqTGs7scXkkahVscmK7cwY3TbcaVvPJRe/exec";
+const API_URL = "TU_LINK"; // cambiá esto
 
 let SESSION = null;
 let DOCENTES = [];
 
-// 🔥 DATA LOCAL (reemplaza GS)
+// ===== DATA LOCAL =====
 const DATA = {
   "UNAHUR": ["Obstetricia", "Diseño Industrial", "Alimentos"],
   "UBA": ["FMED"],
@@ -120,7 +120,6 @@ const DATA = {
   "CUDI": ["Personal"]
 };
 
-// PARADAS
 const PARADAS = {
   "Mañana":["Medicina","Combate","General Paz","Liniers","Va por sus propios medios"],
   "Tarde":["Belgrano","Combate","Liniers","Va por sus propios medios"],
@@ -129,7 +128,6 @@ const PARADAS = {
 
 // ===== LOGIN =====
 async function login(){
-
   let res = await fetch(API_URL,{
     method:"POST",
     body: JSON.stringify({
@@ -150,56 +148,59 @@ async function login(){
   }
 }
 
-// ===== UNIVERSIDADES LOCAL =====
+// ===== UNIVERSIDADES =====
 function cargarUniversidades(){
-
-  universidad.innerHTML = "<option>Elegir universidad</option>";
+  universidad.innerHTML = "<option value=''>Elegir universidad</option>";
 
   for(let u in DATA){
-    universidad.innerHTML += `<option>${u}</option>`;
+    universidad.innerHTML += `<option value="${u}">${u}</option>`;
   }
 }
 
 // ===== CARRERAS =====
-universidad.onchange = function(){
+universidad.addEventListener("change", function(){
 
-  carrera.innerHTML = "<option>Elegir carrera</option>";
+  carrera.innerHTML = "<option value=''>Elegir carrera</option>";
 
-  (DATA[this.value] || []).forEach(c=>{
-    carrera.innerHTML += `<option>${c}</option>`;
+  let lista = DATA[this.value] || [];
+
+  lista.forEach(c=>{
+    carrera.innerHTML += `<option value="${c}">${c}</option>`;
   });
-};
 
-// ===== DOCENTES =====
+  docente.innerHTML = "<option>Elegir docente</option>";
+});
+
+// ===== DOCENTES (API) =====
 async function cargarDocentes(){
-
   let res = await fetch(API_URL+"?action=getDocentes");
   DOCENTES = await res.json();
 }
 
 // ===== FILTRAR DOCENTES =====
-carrera.onchange = function(){
+carrera.addEventListener("change", function(){
 
-  docente.innerHTML = "<option>Elegir docente</option>";
+  docente.innerHTML = "<option value=''>Elegir docente</option>";
 
   DOCENTES
-    .filter(d => d.universidad === universidad.value && d.carrera === carrera.value)
+    .filter(d => d.universidad === universidad.value && d.carrera === this.value)
     .forEach(d=>{
-      docente.innerHTML += `<option value="${d.nombre}" data-tel="${d.telefono}">
-        ${d.nombre}
-      </option>`;
+      docente.innerHTML += `
+        <option value="${d.nombre}" data-tel="${d.telefono}">
+          ${d.nombre}
+        </option>`;
     });
-};
+});
 
-// ===== PARADAS DINÁMICAS =====
-turno.onchange = function(){
+// ===== PARADAS =====
+turno.addEventListener("change", function(){
 
-  parada.innerHTML = "<option>Parada</option>";
+  parada.innerHTML = "<option value=''>Parada</option>";
 
   (PARADAS[this.value] || []).forEach(p=>{
     parada.innerHTML += `<option>${p}</option>`;
   });
-};
+});
 
 // ===== MOSTRAR BLOQUES =====
 checkIda.onchange = ()=> idaDiv.style.display = checkIda.checked ? "block":"none";
@@ -212,25 +213,45 @@ async function cargarViajes(){
   let data = await res.json();
 
   let html = "";
+  let dias = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
-  data.forEach(v=>{
+  dias.forEach(dia=>{
 
-    let autoIda = SESSION?.rol==="chofer"
-      ? `<td onclick="editarAuto('${v.fecha_viaje}','ida',this)">➕</td>`
-      : `<td>${v.auto_ida || "---"}</td>`;
+    let lista = data.filter(v=>v.dia === dia);
 
-    html += `
-    <table>
-    <tr>
-      <td>${v.universidad}</td>
-      <td>${v.carrera}</td>
-      <td>${v.docente}</td>
-      <td>${v.parada}</td>
-      <td>${v.horario_ida}</td>
-      ${autoIda}
-    </tr>
-    </table>
-    `;
+    if(lista.length){
+
+      html += `<h3>${dia}</h3>
+      <table>
+      <tr>
+        <th>Uni</th>
+        <th>Carrera</th>
+        <th>Docente</th>
+        <th>Ida</th>
+        <th>Horario</th>
+        <th>Auto</th>
+      </tr>`;
+
+      lista.forEach(v=>{
+
+        let auto = SESSION?.rol==="chofer"
+          ? `<td onclick="editarAuto('${v.fecha_viaje}','ida',this)">➕</td>`
+          : `<td>${v.auto_ida || "---"}</td>`;
+
+        html += `
+        <tr>
+          <td>${v.universidad}</td>
+          <td>${v.carrera}</td>
+          <td>${v.docente}</td>
+          <td>${v.parada || "-"}</td>
+          <td>${v.horario_ida || "-"}</td>
+          ${auto}
+        </tr>`;
+      });
+
+      html += "</table>";
+    }
+
   });
 
   listaViajes.innerHTML = html;
@@ -240,7 +261,19 @@ async function cargarViajes(){
 form.onsubmit = async e=>{
   e.preventDefault();
 
+  let diasSeleccionados = ["Lunes"]; // podés volver a agregar checkboxes después
+
   let selectedDoc = docente.options[docente.selectedIndex];
+
+  if(!selectedDoc || !selectedDoc.value){
+    alert("Seleccioná docente");
+    return;
+  }
+
+  if(!checkIda.checked && !checkVuelta.checked){
+    alert("Seleccioná ida o vuelta");
+    return;
+  }
 
   let data = {
     action:"guardarViaje",
@@ -252,7 +285,7 @@ form.onsubmit = async e=>{
     parada: parada.value,
     turno_vuelta: turno_vuelta.value,
     parada_vuelta: parada_vuelta.value,
-    dias:["Lunes"]
+    dias: diasSeleccionados
   };
 
   await fetch(API_URL,{
@@ -261,6 +294,7 @@ form.onsubmit = async e=>{
   });
 
   msg.innerText = "Guardado ✔";
+  form.reset();
   cargarViajes();
 };
 
