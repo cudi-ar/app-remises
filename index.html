@@ -601,35 +601,32 @@
 
         function debeMostrarse(v) {
 
-            // 1. CUATRIMESTRAL
-            let cuatri = (v.cuatrimestral ?? "").toString().trim().toUpperCase();
+            let cuatri = normalizarCuatrimestral(v);
 
-            console.log(cuatri);
-
-            // acepta todos los formatos posibles
-            if (cuatri === "SI" || cuatri === "TRUE" || cuatri === "YES" || cuatri === "1") {
-                return true;
-            }
-
-            // 2. fecha inválida fallback
-            if (!v.fecha_viaje) return true;
+            if (cuatri === "SI") return true;
 
             let fechaViaje = new Date(v.fecha_viaje);
             if (isNaN(fechaViaje.getTime())) return true;
 
-            // 3. semana actual (lunes a domingo)
             let hoy = new Date();
 
             let inicioSemana = new Date(hoy);
             inicioSemana.setHours(0, 0, 0, 0);
-            inicioSemana.setDate(hoy.getDate() - hoy.getDay() + 1); // lunes
+            inicioSemana.setDate(hoy.getDate() - hoy.getDay() + 1);
 
             let finSemana = new Date(inicioSemana);
-            finSemana.setDate(inicioSemana.getDate() + 6); // domingo
+            finSemana.setDate(inicioSemana.getDate() + 6);
 
-            console.log("FECHA:", fechaViaje, "INICIO:", inicioSemana, "FIN:", finSemana);
-            // 4. comparar
             return fechaViaje >= inicioSemana && fechaViaje <= finSemana;
+        }
+
+        function normalizarCuatrimestral(v) {
+            return (
+                v.cuatrimestral ??
+                v.Cuatrimestral ??
+                v["Cuatrimestral"] ??
+                ""
+            ).toString().trim().toUpperCase();
         }
 
         // VIAJES COMPLETOS
