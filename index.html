@@ -605,7 +605,7 @@
         function debeMostrarse(v) {
 
             // 🟣 CUATRIMESTRAL → siempre
-            if (v.cuatrimestral === "SI") {
+            if ((v.cuatrimestral || v["Cuatrimestral"]) === "SI") {
                 return true;
             }
 
@@ -645,7 +645,8 @@
             dias.forEach(dia => {
 
                 let lista = data.filter(v =>
-                    v.dia === dia && debeMostrarse(v)
+                    (v.dia || v["Día"])?.trim() === dia &&
+                    debeMostrarse(v)
                 );
 
                 if (lista.length) {
