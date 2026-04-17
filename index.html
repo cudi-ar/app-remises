@@ -551,9 +551,6 @@
 
             let res = await fetch(API_URL + "?action=getDocentes");
             DOCENTES = await res.json();
-
-            console.log("DOCENTES cargados:", DOCENTES);
-
             ocultarLoading(); // 👈 termina animación
         }
 
@@ -608,6 +605,7 @@
 
             // 🔥 normalizar cuatrimestral de forma segura
             let cuatri = (v.cuatrimestral ?? "").toString().trim().toUpperCase();
+            console.log(cuatri);
 
             let esCuatrimestral = cuatri === "SI";
 
