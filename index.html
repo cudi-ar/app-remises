@@ -13,16 +13,16 @@
         }
 
         .header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.header img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
+        .header img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
 
         .container {
             max-width: 700px;
@@ -140,6 +140,17 @@
             margin: 0 auto 10px;
         }
 
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 40px;
+            object-fit: contain;
+        }
+
         @keyframes spin {
             100% {
                 transform: rotate(360deg);
@@ -210,9 +221,9 @@
     <div class="container">
 
         <div class="card">
-            <div class="header">
-                <img src="https://raw.githubusercontent.com/gonzab1/app-choferes/main/logo.png" alt="Logo">
+            <div class="header-title">
                 <h2>Cargar viaje</h2>
+                <img src="https://raw.githubusercontent.com/gonzab1/app-choferes/main/logo.png" class="logo">
             </div>
             <p style="text-align:left; font-size:14px; color:#555;">
                 Complete este formulario para registrar su viaje semanal de remis.<br><br>
