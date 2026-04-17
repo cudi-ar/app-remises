@@ -143,12 +143,67 @@
         .header-title {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: left;
         }
 
         .logo {
             height: 40px;
             object-fit: contain;
+            margin-left: 20px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .login-form input,
+        .login-form button {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Mejora visual en inputs */
+        .login-form input {
+            height: 42px;
+        }
+
+        .loading-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-box {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 4px solid #ddd;
+            border-top: 4px solid #2c7be5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes spin {
@@ -165,22 +220,24 @@
                 white-space: nowrap;
             }
 
-        }
-
-        @media (max-width: 600px) {
-
             .container {
                 padding: 0 5px;
+            }
+
+            .header-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .logo {
+                height: 35px;
             }
 
             .card {
                 padding: 12px;
                 border-radius: 10px;
             }
-
-        }
-
-        @media (max-width: 600px) {
 
             .check-group {
                 gap: 6px;
@@ -189,6 +246,16 @@
             .check-group label {
                 flex: 1 1 45%;
                 justify-content: center;
+            }
+
+            .login-form {
+                gap: 12px;
+            }
+
+            .login-form input,
+            .login-form button {
+                font-size: 16px;
+                /* evita zoom raro en móviles */
             }
 
         }
@@ -308,16 +375,40 @@
         </div>
 
         <div class="card">
-            <h3>Login</h3>
-            <input id="user">
-            <input id="pass" type="password">
-            <button onclick="login()">Entrar</button>
+            <h3>Iniciar Sesion</h3>
+
+            <p style="text-align:left; font-size:14px; color:#555;">
+                Inicia sesion para ingresar patente.<br><br>
+                • En caso de no tener un usuario/contraseña comunicarse con cudisoporte@gmail.com<br>
+            </p>
+
+            <div class="login-form">
+                <input id="user" placeholder="Usuario">
+                <input id="pass" type="password" placeholder="Contraseña">
+                <button onclick="login()">Entrar</button>
+            </div>
+
             <p id="loginMsg"></p>
         </div>
 
     </div>
-
+    <div id="loadingModal" class="loading-modal">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <p>Cargando datos...</p>
+        </div>
+    </div>
     <script>
+
+        function showLoading(text = "Cargando...") {
+            const modal = document.getElementById("loadingModal");
+            modal.style.display = "flex";
+            modal.querySelector("p").innerText = text;
+        }
+
+        function hideLoading() {
+            document.getElementById("loadingModal").style.display = "none";
+        }
 
         function mostrarLoading() {
             document.getElementById("loadingModal").style.display = "flex";
@@ -360,24 +451,38 @@
 
         // LOGIN
         async function login() {
-            let res = await fetch(API_URL, {
-                method: "POST",
-                body: JSON.stringify({
-                    action: "login",
-                    user: user.value,
-                    pass: pass.value
-                })
-            });
 
-            let data = await res.json();
+            showLoading("Iniciando sesión...");
 
-            if (data.success) {
-                SESSION = data;
-                loginMsg.innerText = "✔ " + data.rol;
-                cargarViajes();
-            } else {
-                loginMsg.innerText = "Error login";
+            try {
+                let res = await fetch(API_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "login",
+                        user: user.value,
+                        pass: pass.value
+                    })
+                });
+
+                let data = await res.json();
+
+                if (data.success) {
+                    SESSION = data;
+
+                    loginMsg.innerText = "✔ Sesión iniciada (" + data.rol + ")";
+
+                    showLoading("Cargando viajes...");
+                    await cargarViajes();
+
+                } else {
+                    loginMsg.innerText = "Usuario o contraseña incorrectos";
+                }
+
+            } catch (err) {
+                loginMsg.innerText = "Error de conexión";
             }
+
+            hideLoading();
         }
 
         // UNIVERSIDADES
