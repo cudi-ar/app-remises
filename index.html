@@ -38,7 +38,8 @@
         }
 
         select,
-        input[type="text"] {
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
             padding: 10px 12px;
             border-radius: 8px;
@@ -225,9 +226,7 @@
             }
 
             .header-title {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+                align-items: center;
             }
 
             .logo {
@@ -377,18 +376,18 @@
         <div class="card">
             <h2>Iniciar Sesion</h>
 
-            <p style="text-align:left; font-size:14px; color:#555;">
-                Inicia sesion para ingresar patente.<br><br>
-                • En caso de no tener un usuario/contraseña comunicarse con cudisoporte@gmail.com<br>
-            </p>
+                <p style="text-align:left; font-size:14px; color:#555;">
+                    Inicia sesion para ingresar patente.<br><br>
+                    • En caso de no tener un usuario/contraseña comunicarse con cudisoporte@gmail.com<br>
+                </p>
 
-            <div class="login-form">
-                <input id="user" placeholder="Usuario">
-                <input id="pass" type="password" placeholder="Contraseña">
-                <button onclick="login()">Entrar</button>
-            </div>
+                <div class="login-form">
+                    <input id="user" placeholder="Usuario">
+                    <input id="pass" type="password" placeholder="Contraseña">
+                    <button onclick="login()">Entrar</button>
+                </div>
 
-            <p id="loginMsg"></p>
+                <p id="loginMsg"></p>
         </div>
 
     </div>
