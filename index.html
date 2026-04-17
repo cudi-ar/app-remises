@@ -604,6 +604,8 @@
             // 1. CUATRIMESTRAL
             let cuatri = (v.cuatrimestral ?? "").toString().trim().toUpperCase();
 
+            console.log(cuatri);
+
             // acepta todos los formatos posibles
             if (cuatri === "SI" || cuatri === "TRUE" || cuatri === "YES" || cuatri === "1") {
                 return true;
