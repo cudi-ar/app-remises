@@ -655,8 +655,8 @@
                     (v.dia || v["Día"])?.trim() === dia &&
                     debeMostrarse(v)
                 );
-                console.log("Filtrados:", lista);
 
+                console.log("Día:", dia, "→", lista); // ✅ acá sí funciona
 
                 if (lista.length) {
 
