@@ -601,22 +601,34 @@
 
         function debeMostrarse(v) {
 
-            let cuatri = normalizarCuatrimestral(v);
+            // 1. CUATRIMESTRAL
+            let cuatri = (v.cuatrimestral ?? "").toString().trim().toUpperCase();
 
-            if (cuatri === "SI") return true;
+            console.log(v.cuatrimestral);
+
+            // acepta todos los formatos posibles
+            if (cuatri === "SI" || cuatri === "TRUE" || cuatri === "YES" || cuatri === "1") {
+                return true;
+            }
+
+            // 2. fecha inválida fallback
+            if (!v.fecha_viaje) return true;
 
             let fechaViaje = new Date(v.fecha_viaje);
             if (isNaN(fechaViaje.getTime())) return true;
 
+            // 3. semana actual (lunes a domingo)
             let hoy = new Date();
 
             let inicioSemana = new Date(hoy);
             inicioSemana.setHours(0, 0, 0, 0);
-            inicioSemana.setDate(hoy.getDate() - hoy.getDay() + 1);
+            inicioSemana.setDate(hoy.getDate() - hoy.getDay() + 1); // lunes
 
             let finSemana = new Date(inicioSemana);
-            finSemana.setDate(inicioSemana.getDate() + 6);
+            finSemana.setDate(inicioSemana.getDate() + 6); // domingo
 
+            console.log("FECHA:", fechaViaje, "INICIO:", inicioSemana, "FIN:", finSemana);
+            // 4. comparar
             return fechaViaje >= inicioSemana && fechaViaje <= finSemana;
         }
 
