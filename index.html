@@ -647,14 +647,15 @@
 
             dias.forEach(dia => {
 
+
                 let lista = data.filter(v => {
 
                     let diaRaw = (v.dia ?? v["Día"] ?? v.Dia ?? "").toString().trim().toLowerCase();
                     let diaBuscado = dia.toLowerCase();
-
-                    return diaRaw === diaBuscado && debeMostrarse(v);
                     console.log(v);
                     console.log(diaRaw);
+                    return diaRaw === diaBuscado && debeMostrarse(v);
+
                 });
 
                 console.log("Día:", dia, "→", lista); // ✅ acá sí funciona
