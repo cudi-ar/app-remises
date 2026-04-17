@@ -91,11 +91,25 @@
             font-size: 16px;
         }
 
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            min-width: 900px;
         }
+        .table-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
 
         th,
         td {
@@ -382,7 +396,7 @@
                 </p>
 
                 <div class="login-form">
-                    <input id="user" placeholder="Usuario">
+                    <input id="user" type="text" placeholder="Usuario">
                     <input id="pass" type="password" placeholder="Contraseña">
                     <button onclick="login()">Entrar</button>
                 </div>
@@ -443,9 +457,9 @@
         };
 
         const PARADAS = {
-            "Mañana": ["Medicina", "Combate", "General Paz", "Liniers", "Va por sus propios medios"],
-            "Tarde": ["Belgrano", "Combate", "Liniers", "Va por sus propios medios"],
-            "Noche": ["Belgrano", "Combate", "Liniers", "Va por sus propios medios"]
+            "Mañana": ["Medicina", "Combate", "General Paz", "Liniers", "Va por su medio"],
+            "Tarde": ["Belgrano", "Combate", "Liniers", "Va por su medio"],
+            "Noche": ["Belgrano", "Combate", "Liniers", "Va por su medio"]
         };
 
         // LOGIN
@@ -579,19 +593,20 @@
                 if (lista.length) {
 
                     html += `<h3>${dia}</h3>
-      <table>
-      <tr>
-        <th>Uni</th>
-        <th>Carrera</th>
-        <th>Docente</th>
-        <th>Ida</th>
-        <th>Horario Ida</th>
-        <th>Vuelta</th>
-        <th>Horario Vuelta</th>
-        <th>Auto Ida</th>
-        <th>Auto Vuelta</th>
-        ${esAdmin() ? "<th>Acciones</th>" : ""}
-      </tr>`;
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>Uni</th>
+                                <th>Carrera</th>
+                                <th>Docente</th>
+                                <th>Ida</th>
+                                <th>Horario Ida</th>
+                                <th>Vuelta</th>
+                                <th>Horario Vuelta</th>
+                                <th>Auto Ida</th>
+                                <th>Auto Vuelta</th>
+                                ${esAdmin() ? "<th>Acciones</th>" : ""}
+                            </tr>`;
 
                     lista.forEach(v => {
 
@@ -625,7 +640,7 @@
         </tr>`;
                     });
 
-                    html += "</table>";
+                    html += "</table></div>";
                 }
             });
 
