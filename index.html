@@ -606,33 +606,27 @@
 
             if (!v) return false;
 
-            // 🔥 normalizar cuatrimestral
-            let cuatri = String(v.cuatrimestral).toUpperCase().trim();
+            // 🔥 normalizar cuatrimestral de forma segura
+            let cuatri = (v.cuatrimestral ?? "").toString().trim().toUpperCase();
 
-            let esCuatrimestral = cuatri === "SI" || cuatri === "TRUE" || cuatri === "1";
-            let esNoCuatrimestral = cuatri === "NO" || cuatri === "FALSE" || cuatri === "0";
+            let esCuatrimestral = cuatri === "SI";
 
-            // 1. SI es cuatrimestral → siempre mostrar
+            // 1. cuatrimestral → siempre visible
             if (esCuatrimestral) return true;
 
-            // 2. SI es NO → SIEMPRE debe pasar por filtro de fecha
-            if (esNoCuatrimestral) {
-                if (!v.fecha_viaje) return false;
-            }
+            // 2. si no hay fecha → NO romper ni bloquear todo
+            if (!v.fecha_viaje) return true;
 
-            // 3. seguridad de fecha
-            if (!v.fecha_viaje) return false;
+            let fechaBase = v.fecha_viaje.split(" ")[0];
+            let partes = fechaBase.split("/");
 
-            let fechaStr = v.fecha_viaje.split(" ")[0];
-            let partes = fechaStr.split("/");
-
-            if (partes.length !== 3) return false;
+            if (partes.length !== 3) return true;
 
             let fechaViaje = new Date(partes[2], partes[1] - 1, partes[0]);
 
-            if (isNaN(fechaViaje)) return false;
+            if (isNaN(fechaViaje.getTime())) return true;
 
-            // 4. semana próxima
+            // 3. semana próxima
             let hoy = new Date();
 
             let inicio = new Date(hoy);
@@ -797,7 +791,7 @@
                 parada: parada.value,
                 turno_vuelta: turno_vuelta.value,
                 parada_vuelta: parada_vuelta.value,
-                cuatrimestral: cuatrimestral.checked,
+                cuatrimestral: cuatrimestral.checked ? "SI" : "NO",
                 dias: dias
             };
 
