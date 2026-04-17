@@ -601,27 +601,29 @@
 
         function debeMostrarse(v) {
 
-            if (!v) return false;
-
+            // 1. CUATRIMESTRAL
             let cuatri = (v.cuatrimestral ?? "").toString().trim().toUpperCase();
-
             if (cuatri === "SI") return true;
 
+            // 2. fecha inválida fallback
             if (!v.fecha_viaje) return true;
 
             let fechaViaje = new Date(v.fecha_viaje);
-
             if (isNaN(fechaViaje.getTime())) return true;
 
+            // 3. semana actual (lunes a domingo)
             let hoy = new Date();
 
-            let inicio = new Date(hoy);
-            inicio.setDate(hoy.getDate() - hoy.getDay() + 8);
+            let inicioSemana = new Date(hoy);
+            inicioSemana.setHours(0, 0, 0, 0);
+            inicioSemana.setDate(hoy.getDate() - hoy.getDay() + 1); // lunes
 
-            let fin = new Date(inicio);
-            fin.setDate(inicio.getDate() + 6);
+            let finSemana = new Date(inicioSemana);
+            finSemana.setDate(inicioSemana.getDate() + 6); // domingo
 
-            return fechaViaje >= inicio && fechaViaje <= fin;
+            console.log("FECHA:", fechaViaje, "INICIO:", inicioSemana, "FIN:", finSemana);
+            // 4. comparar
+            return fechaViaje >= inicioSemana && fechaViaje <= finSemana;
         }
 
         // VIAJES COMPLETOS
@@ -640,13 +642,13 @@
 
                     let diaRaw = (v.dia ?? v["Día"] ?? v.Dia ?? "").toString().trim().toLowerCase();
                     let diaBuscado = dia.toLowerCase();
-                    console.log(v);
+                    // console.log(v);
                     // console.log(diaRaw);
                     return diaRaw === diaBuscado && debeMostrarse(v);
 
                 });
 
-                console.log("Día:", dia, "→", lista); // ✅ acá sí funciona
+                // console.log("Día:", dia, "→", lista); // ✅ acá sí funciona
 
                 if (lista.length) {
 
