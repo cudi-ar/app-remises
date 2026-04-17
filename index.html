@@ -552,6 +552,8 @@
             let res = await fetch(API_URL + "?action=getDocentes");
             DOCENTES = await res.json();
 
+            console.log("DOCENTES cargados:", DOCENTES);
+
             ocultarLoading(); // 👈 termina animación
         }
 
@@ -636,6 +638,7 @@
             let res = await fetch(API_URL + "?action=obtenerViajes");
             let data = await res.json();
 
+            console.log("VIAJES:", data);
             let html = "";
             let dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
