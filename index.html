@@ -651,10 +651,24 @@
 
             dias.forEach(dia => {
 
-                let lista = data.filter(v =>
-                    (v.dia || v["Día"])?.trim() === dia &&
-                    debeMostrarse(v)
-                );
+                let lista = data.filter(v => {
+
+                    let diaRaw = v.dia || v["Día"] || v["Dia"] || "";
+
+                    diaRaw = diaRaw
+                        .toString()
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "") // saca tildes
+                        .trim()
+                        .toLowerCase();
+
+                    let diaTarget = dia
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .toLowerCase();
+
+                    return diaRaw === diaTarget && debeMostrarse(v);
+                });
 
                 console.log("Día:", dia, "→", lista); // ✅ acá sí funciona
 
