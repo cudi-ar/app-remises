@@ -603,33 +603,30 @@
         }
 
         function debeMostrarse(v) {
-            console.log("CLAVES:", Object.keys(data[0]));
+
             // 🟣 CUATRIMESTRAL → siempre
-            if ((v.cuatrimestral || v["Cuatrimestral"]) === "SI") {
+            if (v.cuatrimestral === "SI") {
                 return true;
             }
 
             // 🟡 NO CUATRIMESTRAL → solo próxima semana
             let hoy = new Date();
 
-            // inicio de la próxima semana (lunes)
+            // lunes próxima semana
             let inicio = new Date(hoy);
             inicio.setDate(hoy.getDate() - hoy.getDay() + 8);
 
-            // fin de la próxima semana (domingo)
+            // domingo próxima semana
             let fin = new Date(inicio);
             fin.setDate(inicio.getDate() + 6);
 
-            // fecha del viaje (tu formato tipo: "6/4/2026 12:38:01")
-            let fechaRaw = v.fecha_viaje || v["Fecha Viaje"];
+            // parsear fecha (formato: dd/mm/yyyy ...)
+            let partes = v.fecha_viaje.split(" ")[0].split("/");
 
-            if (!fechaRaw) return false;
-
-            let partes = fechaRaw.split(" ")[0].split("/");
             let fechaViaje = new Date(
-                partes[2],        // año
-                partes[1] - 1,    // mes
-                partes[0]         // día
+                partes[2],       // año
+                partes[1] - 1,   // mes
+                partes[0]        // día
             );
 
             return fechaViaje >= inicio && fechaViaje <= fin;
