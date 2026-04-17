@@ -653,21 +653,10 @@
 
                 let lista = data.filter(v => {
 
-                    let diaRaw = v.dia || v["Día"] || v["Dia"] || "";
+                    let diaRaw = (v.dia ?? v["Día"] ?? v.Dia ?? "").toString().trim().toLowerCase();
+                    let diaBuscado = dia.toLowerCase();
 
-                    diaRaw = diaRaw
-                        .toString()
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "") // saca tildes
-                        .trim()
-                        .toLowerCase();
-
-                    let diaTarget = dia
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")
-                        .toLowerCase();
-
-                    return diaRaw === diaTarget && debeMostrarse(v);
+                    return diaRaw === diaBuscado && debeMostrarse(v);
                 });
 
                 console.log("Día:", dia, "→", lista); // ✅ acá sí funciona
