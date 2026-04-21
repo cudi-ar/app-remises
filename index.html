@@ -10,7 +10,7 @@
             background: #f5f7fb;
             margin: 0;
             padding: 10px;
-            /* overflow-x: hidden; */
+            overflow-x: hidden;
         }
 
         .header {
@@ -26,7 +26,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 700px;
             margin: auto;
         }
 
@@ -95,16 +95,15 @@
         .table-container {
             width: 100%;
             overflow-x: auto;
+            overflow-y: hidden;
         }
 
         table {
+            width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            width: max-content;
-            /* 👈 clave */
-            min-width: 100%;
+            min-width: 900px;
         }
-
 
         .table-container::-webkit-scrollbar {
             height: 6px;
@@ -118,8 +117,7 @@
         th,
         td {
             border: 1px solid #ddd;
-            font-size: 11px;
-            padding: 3px;
+            padding: 6px;
         }
 
         th {
@@ -234,64 +232,68 @@
 
         @media (max-width: 600px) {
 
-            th:nth-child(8),
-            td:nth-child(8),
-            th:nth-child(9),
-            td:nth-child(9) {
-                display: none;
+            table {
+                min-width: 700px;
+                /* 🔥 bajamos de 900 */
             }
-        }
 
-        h3 {
-            font-size: 16px;
-        }
+            h3 {
+                font-size: 16px;
+            }
 
-        th,
-        td {
-            font-size: 12px;
-            padding: 4px;
-        }
+            th,
+            td {
+                font-size: 12px;
+                padding: 4px;
+            }
 
-        button {
-            padding: 10px;
-            font-size: 14px;
-        }
+            button {
+                padding: 10px;
+                font-size: 14px;
+            }
 
-        .container {
-            padding: 0 5px;
-        }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
 
-        .header-title {
-            align-items: center;
-        }
+            .container {
+                padding: 0 5px;
+            }
 
-        .logo {
-            height: 35px;
-        }
+            .header-title {
+                align-items: center;
+            }
 
-        .card {
-            padding: 12px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+            .logo {
+                height: 35px;
+            }
 
-        .check-group {
-            gap: 6px;
-        }
+            .card {
+                padding: 12px;
+                border-radius: 10px;
+            }
 
-        .check-group label {
-            flex: 1 1 45%;
-            justify-content: center;
-        }
+            .check-group {
+                gap: 6px;
+            }
 
-        .login-form {
-            gap: 12px;
-        }
+            .check-group label {
+                flex: 1 1 45%;
+                justify-content: center;
+            }
 
-        .login-form input,
-        .login-form button {
-            font-size: 16px;
-            /* evita zoom raro en móviles */
+            .login-form {
+                gap: 12px;
+            }
+
+            .login-form input,
+            .login-form button {
+                font-size: 16px;
+                /* evita zoom raro en móviles */
+            }
+
         }
     </style>
 
@@ -672,9 +674,9 @@
                                 <th>Carrera</th>
                                 <th>Docente</th>
                                 <th>Ida</th>
-                                <th>Hora Ida</th>
+                                <th>Horario Ida</th>
                                 <th>Vuelta</th>
-                                <th>Hora Vuelta</th>
+                                <th>Horario Vuelta</th>
                                 <th>Auto Ida</th>
                                 <th>Auto Vuelta</th>
                                 ${esAdmin() ? "<th>Acciones</th>" : ""}
