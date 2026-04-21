@@ -26,7 +26,7 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 1200px;
             margin: auto;
         }
 
@@ -94,12 +94,15 @@
 
         .table-container {
             width: 100%;
+            overflow-x: auto;
         }
 
         table {
-            width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            width: max-content;
+            /* 👈 clave */
+            min-width: 100%;
         }
 
 
@@ -269,6 +272,7 @@
         .card {
             padding: 12px;
             border-radius: 10px;
+            overflow: hidden;
         }
 
         .check-group {
@@ -288,8 +292,6 @@
         .login-form button {
             font-size: 16px;
             /* evita zoom raro en móviles */
-        }
-
         }
     </style>
 
@@ -670,9 +672,9 @@
                                 <th>Carrera</th>
                                 <th>Docente</th>
                                 <th>Ida</th>
-                                <th>Horario Ida</th>
+                                <th>Hora Ida</th>
                                 <th>Vuelta</th>
-                                <th>Horario Vuelta</th>
+                                <th>Hora Vuelta</th>
                                 <th>Auto Ida</th>
                                 <th>Auto Vuelta</th>
                                 ${esAdmin() ? "<th>Acciones</th>" : ""}
