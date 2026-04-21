@@ -473,6 +473,9 @@
         const turno_vuelta = document.querySelector('[name="turno_vuelta"]');
         const parada_vuelta = document.querySelector('[name="parada_vuelta"]');
         const cuatrimestral = document.querySelector('[name="cuatrimestral"]');
+        const user = document.getElementById("user");
+        const pass = document.getElementById("pass");
+
         [user, pass].forEach(input => {
             input.addEventListener("input", () => {
                 input.classList.remove("error");
